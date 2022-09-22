@@ -1,6 +1,8 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const piiqUserRoutes = require("./routes/piiquser");
+const piiqSauceRoutes = require("./routes/piiqsauce");
+const path = require("path");
 
 const app = express();
 
@@ -24,16 +26,8 @@ app.use((req, res, next) => {
     next();
 });
 
-// app.post("/api/auth/signup", (req, res, next) => {
-//     console.log(req.body);
-//     res.status(201).json({message: "Objet créé!"});
-// });
-
-// app.post("/api/auth/login", (req, res, next) => {
-//     console.log(req.body);
-//     res.status(201).json({message: "Objet créé!"});
-// });
-
 app.use("/api/auth", piiqUserRoutes);
+app.use("/api/sauces", piiqSauceRoutes);
+app.use("/images", express.static(path.join(__dirname, "images")));
 
 module.exports = app;
