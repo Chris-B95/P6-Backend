@@ -1,4 +1,5 @@
 const express = require("express");
+const helmet = require("helmet");
 const mongoose = require("mongoose");
 const piiqUserRoutes = require("./routes/piiquser");
 const piiqSauceRoutes = require("./routes/piiqsauce");
@@ -14,6 +15,9 @@ mongoose.connect("mongodb+srv://CBeauStudent:openclass2022@cluster0.jb5ldq9.mong
     })
     .then(() => console.log("Connexion à MongoDB réussie!"))
     .catch(() => console.log("Connexion à MongoDB échouée!"));
+
+// Helmet sécurité sur les headers, désactivation d'une option qui empêche chargement des images dans ce projet
+app.use(helmet({crossOriginResourcePolicy: false,}));
 
 // Analyse du corps de la requête
 app.use(express.json());
