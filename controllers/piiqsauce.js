@@ -31,7 +31,66 @@ exports.createSauce = (req, res, next) => {
 };
 
 exports.likeSauce = (req, res, next) => {
-    console.log(req.body);
+    switch(req.body.like) {
+        case 1:
+            PiiqSauce.findOne({_id: req.params.id})
+                .then(sauce => {
+                    if(!(sauce.usersLiked.includes(req.auth.userId))) {
+                        let updatedLikes = sauce.likes + 1;
+                        let updatedUsers = sauce.usersLiked;
+                        updatedUsers.push(req.auth.userId);
+                        PiiqSauce.updateOne({_id: req.params.id}, {likes: updatedLikes, usersLiked: updatedUsers, _id: req.params.id})
+                            .then(() => res.status(200).json({message: "Likes modifiés!"}))
+                            .catch(error => res.status(401).json({error}));
+                    } else {
+                        console.log("Utilisateur a déjà like!");
+                    };
+                })
+                .catch(error => res.status(400).json({error}));
+            break;
+        case 0:
+            PiiqSauce.findOne({_id: req.params.id})
+            .then(sauce => {
+                if(sauce.usersLiked.includes(req.auth.userId)) {
+                    let updatedLikes = sauce.likes - 1;
+                    let updatedUsers = sauce.usersLiked;
+                    let userToRemove = sauce.usersLiked.indexOf(req.auth.userId);
+                    updatedUsers.splice(userToRemove);
+                    PiiqSauce.updateOne({_id: req.params.id}, {likes: updatedLikes, usersLiked: updatedUsers, _id: req.params.id})
+                        .then(() => res.status(200).json({message: "Like retiré!"}))
+                        .catch(error => res.status(401).json({error}));
+                };
+                if(sauce.usersDisliked.includes(req.auth.userId)) {
+                    let updatedDislikes = sauce.dislikes - 1;
+                    let updatedUsers = sauce.usersDisliked;
+                    let userToRemove = sauce.usersDisliked.indexOf(req.auth.userId);
+                    updatedUsers.splice(userToRemove);
+                    PiiqSauce.updateOne({_id: req.params.id}, {dislikes: updatedDislikes, usersDisliked: updatedUsers, _id: req.params.id})
+                        .then(() => res.status(200).json({message: "Dislike retiré!"}))
+                        .catch(error => res.status(401).json({error}));
+                };
+            })
+            .catch(error => res.status(400).json({error}));
+            break;
+        case -1:
+            PiiqSauce.findOne({_id: req.params.id})
+            .then(sauce => {
+                if(!(sauce.usersDisliked.includes(req.auth.userId))) {
+                    let updatedDislikes = sauce.dislikes + 1;
+                    let updatedUsers = sauce.usersDisliked;
+                    updatedUsers.push(req.auth.userId);
+                    PiiqSauce.updateOne({_id: req.params.id}, {dislikes: updatedDislikes, usersDisliked: updatedUsers, _id: req.params.id})
+                        .then(() => res.status(200).json({message: "Dislikes modifiés!"}))
+                        .catch(error => res.status(401).json({error}));
+                } else {
+                    console.log("Utilisateur a déjà dislike!");
+                };
+            })
+            .catch(error => res.status(400).json({error}));
+            break;
+        default:
+            break;
+    };
 };
 
 exports.modifySauce = (req, res, next) => {
