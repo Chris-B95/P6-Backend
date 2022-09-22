@@ -1,5 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const piiqUserRoutes = require("./routes/piiquser");
 
 const app = express();
 
@@ -22,5 +23,17 @@ app.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, PATCH, OPTIONS");
     next();
 });
+
+// app.post("/api/auth/signup", (req, res, next) => {
+//     console.log(req.body);
+//     res.status(201).json({message: "Objet créé!"});
+// });
+
+// app.post("/api/auth/login", (req, res, next) => {
+//     console.log(req.body);
+//     res.status(201).json({message: "Objet créé!"});
+// });
+
+app.use("/api/auth", piiqUserRoutes);
 
 module.exports = app;
