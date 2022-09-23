@@ -1,8 +1,9 @@
 const argon2 = require("argon2");
 const jwt = require("jsonwebtoken");
+const dotenv = require("dotenv");
 const PiiqUser = require("../models/piiquser");
 
-const dotenv = require("dotenv");
+// Initialisation dotenv
 dotenv.config();
 const PIIQ_TOKEN = process.env.PIIQ_TOKEN;
 

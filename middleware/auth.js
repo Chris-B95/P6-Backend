@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
-
 const dotenv = require("dotenv");
+
+// Initialisation dotenv
 dotenv.config();
 const PIIQ_TOKEN = process.env.PIIQ_TOKEN;
 
