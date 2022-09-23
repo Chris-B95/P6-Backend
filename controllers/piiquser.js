@@ -2,6 +2,10 @@ const argon2 = require("argon2");
 const jwt = require("jsonwebtoken");
 const PiiqUser = require("../models/piiquser");
 
+const dotenv = require("dotenv");
+dotenv.config();
+const PIIQ_TOKEN = process.env.PIIQ_TOKEN;
+
 exports.signup = (req, res, next) => {
     argon2.hash(req.body.password, { type: argon2.argon2i })
         .then(hash => {
@@ -30,7 +34,7 @@ exports.login = (req, res, next) => {
                     res.status(200).json({
                         userId: user._id, token: jwt.sign(
                             { userId: user._id },
-                            "RANDOM_SECRET_TOKEN",
+                            PIIQ_TOKEN,
                             { expiresIn: "24h" }
                         )
                     });

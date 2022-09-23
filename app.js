@@ -8,7 +8,10 @@ const path = require("path");
 const app = express();
 
 // Connexion à la bdd
-mongoose.connect("mongodb+srv://CBeauStudent:openclass2022@cluster0.jb5ldq9.mongodb.net/?retryWrites=true&w=majority",
+const dotenv = require("dotenv");
+dotenv.config();
+const PIIQ_BDD = process.env.PIIQ_BDD;
+mongoose.connect(PIIQ_BDD,
     {
         useNewUrlParser: true,
         useUnifiedTopology: true

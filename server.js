@@ -1,5 +1,10 @@
 const http = require("http");
 const app = require("./app");
+const dotenv = require("dotenv");
+
+// Initialisation dotenv
+dotenv.config();
+const PIIQ_PORT = process.env.PIIQ_PORT;
 
 // Renvoie un port valide qu'il soit fourni en numéro ou chaîne
 const normalizePort = val => {
@@ -12,7 +17,7 @@ const normalizePort = val => {
     }
     return false;
 };
-const port = normalizePort(process.env.PORT || "3000");
+const port = normalizePort(PIIQ_PORT || "3000");
 app.set("port", port);
 
 //Recherche les différentes erreurs et les gère de manière appropriée
