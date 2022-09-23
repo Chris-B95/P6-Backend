@@ -2,23 +2,28 @@ const argon2 = require("argon2");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 const PiiqUser = require("../models/piiquser");
+const verificator = require("../middleware/verificator");
 
 // Initialisation dotenv
 dotenv.config();
 const PIIQ_TOKEN = process.env.PIIQ_TOKEN;
 
 exports.signup = (req, res, next) => {
-    argon2.hash(req.body.password, { type: argon2.argon2i })
-        .then(hash => {
-            const user = new PiiqUser({
-                email: req.body.email,
-                password: hash
-            });
-            user.save()
-                .then(() => res.status(201).json({ message: "Utilisateur créé!" }))
-                .catch(error => res.status(400).json({ error }));
-        })
-        .catch(error => res.status(500).json({ error }));
+    if (verificator.validEmail(req.body.email) && verificator.validPass(req.body.password)) {
+        argon2.hash(req.body.password, { type: argon2.argon2i })
+            .then(hash => {
+                const user = new PiiqUser({
+                    email: req.body.email,
+                    password: hash
+                });
+                user.save()
+                    .then(() => res.status(201).json({ message: "Utilisateur créé!" }))
+                    .catch(error => res.status(400).json({ error }));
+            })
+            .catch(error => res.status(500).json({ error }));
+    } else {
+        console.log("Email et/ou Password invalide!");
+    }
 };
 
 exports.login = (req, res, next) => {
