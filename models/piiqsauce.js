@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const mongooseErrors = require("mongoose-errors");
 
 const piiqSauceSchema = mongoose.Schema({
     userId: {type: String, required: true},
@@ -13,5 +14,7 @@ const piiqSauceSchema = mongoose.Schema({
     usersLiked: {type: [String], required: true},
     usersDisliked: {type: [String], required: true},
 });
+
+piiqSauceSchema.plugin(mongooseErrors);
 
 module.exports = mongoose.model("PiiqSauce", piiqSauceSchema);

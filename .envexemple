@@ -1,0 +1,3 @@
+PIIQ_PORT=3000
+PIIQ_TOKEN="TOKENICI"
+PIIQ_BDD="mongodb+srv://<login>:<password>@cluster0.jb5ldq9.mongodb.net/?retryWrites=true&w=majority"
